@@ -1,0 +1,32 @@
+﻿@page "/genre/add"
+
+<h3>Add Genre</h3>
+
+<EditForm Model="genre" OnValidSubmit="Create">
+    <!-- validations happen and will highlight errors -->
+    <DataAnnotationsValidator />
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Name</span>
+        </div>
+
+        <InputText class="form-control" placeholder="i.e.: terror, sci-fi, romance..." @bind-Value="@genre.Name" />
+
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit">Add new genre</button>
+        </div>
+    </div>
+    <!-- error highlighting -->
+    <ValidationMessage For="@( () => genre.Name )" />
+</EditForm>
+
+@code {
+    Genre genre = new Genre();
+
+    private void Create()
+    {
+        Console.WriteLine($"Genre \"{genre.Name}\" added succesfully");
+        genre.Name = "";
+    }
+}
