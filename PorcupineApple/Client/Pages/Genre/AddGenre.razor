@@ -6,19 +6,24 @@
     <!-- validations happen and will highlight errors -->
     <DataAnnotationsValidator />
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Name</span>
-        </div>
+    <div class="container-fluid">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Name</span>
+            </div>
 
-        <InputText class="form-control" placeholder="i.e.: terror, sci-fi, romance..." @bind-Value="@genre.Name" />
+            <InputText class="form-control" placeholder="i.e.: terror, sci-fi, romance..." @bind-Value="@genre.Name" />
 
-        <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="submit">Add new genre</button>
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Add new genre</button>
+            </div>
         </div>
     </div>
-    <!-- error highlighting -->
-    <ValidationMessage For="@( () => genre.Name )" />
+
+    <div class="container">
+        <!-- error highlighting -->
+        <ValidationMessage For="@( () => genre.Name )" />
+    </div>
 </EditForm>
 
 @code {

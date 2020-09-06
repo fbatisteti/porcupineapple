@@ -6,69 +6,132 @@
     <DataAnnotationsValidator />
 
     <div class="container-fluid">
+        <div class="row mb-1">
+            <h6>Title and full name</h6>
+        </div>
         <div class="row mb-3">
+            <div class="input-group">
+                <!-- in case of no pick, instead of showing "Title" it will show (blank)... more on the code section -->
+                <div class="input-group">
+                    <select class="custom-select col-2" id="inlineFormCustomSelect" @bind="user.Title">
+                        <option selected>Title</option>
+                        <option value="Master">Master</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Ms">Ms</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Mx">Mx</option>
+                    </select>
+
+
+                    <InputText class="form-control" placeholder="First name" @bind-Value="@user.FirstName" />
+
+                    <InputText class="form-control" placeholder="Last name" @bind-Value="@user.LastName" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <h6>Date of Birth</h6>
+        </div>
+        <div class="row mb-3">
+            <div>
+                <InputDate placeholder="Date of birth" @bind-Value="@user.DOB" />
+            </div>
+            <div class="text-muted d-inline">
+                @GetAge()
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <h6>Credentials:</h6>
+        </div>
+        <div class="row mb-1">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" @bind="user.Title">
-                        <option selected>Title</option>
-                        <option value="master">Master</option>
-                        <option value="mr">Mr</option>
-                        <option value="miss">Miss</option>
-                        <option value="ms">Ms</option>
-                        <option value="mrs">Mrs</option>
-                        <option value="mx">Mx</option>
-                    </select>
+                    <span class="input-group-text">Login (e-mail)</span>
                 </div>
-
-                <InputText class="form-control" placeholder="First name" @bind-Value="@user.FirstName" />
-                <ValidationMessage For="@( () => user.FirstName )" />
-
-                <InputText class="form-control" placeholder="Last name" @bind-Value="@user.LastName" />
-                <ValidationMessage For="@( () => user.LastName )" />
+                <div>
+                    <InputText class="form-control" placeholder="e-mail" @bind-Value="@user.Email" />
+                </div>
             </div>
         </div>
-
         <div class="row mb-3">
-            <div class="col-6">
-                <InputDate placeholder="Date of birth" @bind-Value="@user.DOB" />
-                <ValidationMessage For="@( () => user.DOB )" />
-            </div>
-
-            <div class="col-6">
-                <InputText class="form-control" placeholder="e-mail" @bind-Value="@user.Email" />
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="input-group">
+            <div class="input-group mb-1">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Password</span>
                 </div>
                 <InputText class="form-control" placeholder="Minimum of 6 characters" @bind-Value="@user.Password" />
-                <ValidationMessage For="@( () => user.Password )" />
-
+            </div>
+            <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Confirm password</span>
                 </div>
-                <InputText class="form-control" @bind-Value="@user.Password" />
+                <InputText class="form-control" @bind-Value="@confirmPassword" />
             </div>
         </div>
     </div>
 
     <div>
-        <button class="btn btn-outline-primary" type="submit">Add new user</button>
+        <button class="btn btn-outline-primary float-right" type="submit">Add new user</button>
+    </div>
+
+    <!-- this is the alerts for wrong inputs -->
+    <div class="container">
+        <ValidationMessage For="@( () => user.FirstName )" />
+        <ValidationMessage For="@( () => user.LastName )" />
+        <ValidationMessage For="@( () => user.DOB )" />
+        <ValidationMessage For="@( () => user.Email )" />
+        <ValidationMessage For="@( () => user.Password )" />
     </div>
 </EditForm>
 
 @code {
     User user = new User();
+    string confirmPassword;
+
+    // title fixer in case of no title chosen
+    private void FixTitle()
+    {
+        if (user.Title == "Title") user.Title = "";
+    }
 
     private void Create()
     {
-        Console.WriteLine("User added successfully");
-        Console.WriteLine($"{user.Title} {user.FirstName} {user.LastName}");
-        Console.WriteLine(user.DOB);
-        Console.WriteLine(user.Email);
-        Console.WriteLine(user.Password);
+        if (user.Password == confirmPassword)
+        {
+            FixTitle();
+            Console.WriteLine("User added successfully");
+            Console.WriteLine($"{user.Title} {user.FirstName} {user.LastName}");
+            Console.WriteLine(user.DOB);
+            Console.WriteLine(user.Email);
+            Console.WriteLine(user.Password);
+        }
+        else
+        {
+
+        }
+    }
+
+    private string GetAge()
+    {
+        int age = 0;
+        string output;
+
+        age = DateTime.Now.Year - user.DOB.Year;
+        if (DateTime.Now.DayOfYear < user.DOB.DayOfYear)
+            age = age - 1;
+
+        // somehow it won't work if you give this $"string" directly on the return...
+        if (age > 100)
+        {
+            output = $"Wow, {age} years old... incredible!";
+        }
+        else
+        {
+            output = $"You are {age} years old";
+        }
+
+        return output;
     }
 }

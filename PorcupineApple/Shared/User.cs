@@ -11,16 +11,18 @@ namespace PorcupineApple.Shared
         public string Title { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
         [DisplayFormat(DataFormatString = "mm/dd/yyyy")]
         public DateTime DOB { get; set; }
 
-        [Required]
+        [Required (ErrorMessage = "Please insert a valid e-mail")]
         // requires e-mail to be "SOMETHING + @SOMETHING + .SOMETHING + SOMETHING"
         [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Please inform a valid e-mail")]
         public string Email { get; set; }
