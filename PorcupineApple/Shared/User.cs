@@ -23,8 +23,9 @@ namespace PorcupineApple.Shared
         public DateTime DOB { get; set; }
 
         [Required (ErrorMessage = "Please insert a valid e-mail")]
-        // requires e-mail to be "SOMETHING + @SOMETHING + .SOMETHING + SOMETHING"
-        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Please inform a valid e-mail")]
+        [EmailAddress]
+        // can also be used as the line below
+        // [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Please inform a valid e-mail")]
         public string Email { get; set; }
 
         [Required (ErrorMessage = "Password must contain at least 6 characters")]

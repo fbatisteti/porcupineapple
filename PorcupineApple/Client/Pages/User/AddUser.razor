@@ -61,34 +61,49 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Password</span>
                 </div>
-                <InputText class="form-control" placeholder="Minimum of 6 characters" @bind-Value="@user.Password" />
+                <InputText class="form-control" type="password" placeholder="Minimum of 6 characters" @bind-Value="@user.Password" />
             </div>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Confirm password</span>
                 </div>
-                <InputText class="form-control" @bind-Value="@confirmPassword" />
+                <InputText class="form-control" type="password" @bind-Value="@confirmPassword" />
             </div>
         </div>
-    </div>
 
-    <div>
-        <button class="btn btn-outline-primary float-right" type="submit">Add new user</button>
-    </div>
+        <div class="row mb-1">
+            <h6>Terms of Service:</h6>
+        </div>
+        <div class="row mb-1">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" @bind-value="@confirmTOS">
+                    </div>
+                </div>
+                <span class="input-group-text">I have read and agreed with the <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Terms of Service</a></span>
+            </div>
+        </div>
 
-    <!-- this is the alerts for wrong inputs -->
-    <div class="container">
-        <ValidationMessage For="@( () => user.FirstName )" />
-        <ValidationMessage For="@( () => user.LastName )" />
-        <ValidationMessage For="@( () => user.DOB )" />
-        <ValidationMessage For="@( () => user.Email )" />
-        <ValidationMessage For="@( () => user.Password )" />
+        <div>
+            <button class="btn btn-outline-primary float-right" type="submit">Add new user</button>
+        </div>
+
+        <!-- this is the alerts for wrong inputs -->
+        <div class="container">
+            <ValidationMessage For="@( () => user.FirstName )" />
+            <ValidationMessage For="@( () => user.LastName )" />
+            <ValidationMessage For="@( () => user.DOB )" />
+            <ValidationMessage For="@( () => user.Email )" />
+            <ValidationMessage For="@( () => user.Password )" />
+        </div>
     </div>
 </EditForm>
 
 @code {
     User user = new User();
     string confirmPassword;
+    Boolean confirmTOS;
 
     // title fixer in case of no title chosen
     private void FixTitle()
@@ -98,7 +113,7 @@
 
     private void Create()
     {
-        if (user.Password == confirmPassword)
+        if (user.Password == confirmPassword && confirmTOS == true)
         {
             FixTitle();
             Console.WriteLine("User added successfully");
